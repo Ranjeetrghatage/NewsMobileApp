@@ -8,7 +8,7 @@ namespace NewsMobileApp
         {
             InitializeComponent();
 
-            MainPage = new HomePage();
+            MainPage = new NavigationPage(new HomePage());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using NewsMobileApp.MVVM.Models;
+﻿using DocumentFormat.OpenXml.Office2016.Drawing.Command;
+using NewsMobileApp.MVVM.Models;
+using NewsMobileApp.MVVM.Views;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 
@@ -37,6 +39,24 @@ namespace NewsMobileApp.MVVM.ViewModels
                 RaisePropertyChanged(nameof(CategorySelected));
                 CallApi(CategorySelected.Name);
             }
+        }
+
+
+        private Article _articleselected;
+
+        public Article ArtcleSelected
+        {
+            get { return _articleselected; }
+            set { _articleselected = value;
+            RaisePropertyChanged(nameof(ArtcleSelected));
+                if(_articleselected != null)
+                   ArticleSelectedMethod(ArtcleSelected);
+            }
+        }
+
+        public async void ArticleSelectedMethod(Article sel)
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new DetailsPage(sel));
         }
 
         private async void CallApi(string v = "breaking-news")
