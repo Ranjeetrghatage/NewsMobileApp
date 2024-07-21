@@ -1,4 +1,6 @@
-﻿namespace NewsMobileApp
+﻿using NewsMobileApp.MVVM.Views;
+
+namespace NewsMobileApp
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new HomePage();
         }
     }
 }
