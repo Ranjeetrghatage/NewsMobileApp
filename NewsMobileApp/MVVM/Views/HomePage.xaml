@@ -6,10 +6,48 @@
     Title="HomePage"
     NavigationPage.HasNavigationBar="False">
     <Grid RowDefinitions="100,auto,*">
-        <Label
-            HorizontalOptions="Center"
-            Text="Daily News"
-            VerticalOptions="Center" />
+        <!--<HorizontalStackLayout Background="Green" HorizontalOptions="Fill">
+            <Label
+                FontSize="25"
+                HorizontalOptions="Start"
+                Text="Daily News"
+                VerticalOptions="Center" />
+            <Picker
+                x:Name="picker"
+                Title="Select a monkey"
+                HorizontalOptions="End"
+                VerticalOptions="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Baboon</x:String>
+                        <x:String>Capuchin Monkey</x:String>
+                        <x:String>Blue Monkey</x:String>
+                        <x:String>Squirrel Monkey</x:String>
+                        <x:String>Golden Lion Tamarin</x:String>
+                        <x:String>Howler Monkey</x:String>
+                        <x:String>Japanese Macaque</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </HorizontalStackLayout>-->
+        <Grid RowDefinitions="*">
+            <Label
+                FontAttributes="Bold"
+                FontSize="{OnPlatform Android=35,
+                                      UWP=50}"
+                HorizontalOptions="Start"
+                Text="Daily News"
+                VerticalOptions="Center" />
+            <Picker
+                x:Name="picker"
+                Title="Select Language"
+                Margin="0,10,20,0"
+                HeightRequest="61"
+                HorizontalOptions="End"
+                ItemsSource="{Binding ComboProp}"
+                SelectedItem="{Binding ComboSelected}"
+                VerticalOptions="Start" />
+        </Grid>
         <CollectionView
             x:Name="CategoryView"
             Grid.Row="1"

@@ -15,9 +15,9 @@ namespace NewsMobileApp.MVVM.ViewModels
         {
         }
 
-        public static async Task<ObservableCollection<Article>> LoadNews(string newsHeading,ObservableCollection<Article> newsList)
+        public static async Task<ObservableCollection<Article>> LoadNews(string newsHeading,string language,ObservableCollection<Article> newsList)
         {
-            var Rootnews =await ApiData.GetNews(newsHeading);
+            var Rootnews =await ApiData.GetNews(newsHeading, language);
 
             foreach (var article in Rootnews.Articles)
             {

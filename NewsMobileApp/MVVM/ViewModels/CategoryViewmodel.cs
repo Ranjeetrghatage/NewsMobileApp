@@ -3,6 +3,7 @@ using NewsMobileApp.MVVM.Models;
 using NewsMobileApp.MVVM.Views;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace NewsMobileApp.MVVM.ViewModels
 {
@@ -14,6 +15,7 @@ namespace NewsMobileApp.MVVM.ViewModels
             ArticlesList = new ObservableCollection<Article>();
             LoadCategory();
             CallApi();
+            ComboLangItemSrc();
         }
 
         public ObservableCollection<Category> ListOfCategory { get; set; }
@@ -59,18 +61,83 @@ namespace NewsMobileApp.MVVM.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new DetailsPage(sel));
         }
 
-        private async void CallApi(string v = "breaking-news")
+
+        private ObservableCollection<string> _comboProp;
+
+        public ObservableCollection<string> ComboProp
         {
-            v = string.IsNullOrEmpty(v) ? "breaking-news" : v;
+            get { return _comboProp; }
+            set { _comboProp = value;
+            RaisePropertyChanged(nameof(ComboProp));   
+            }
+        }
+
+
+        private string _comboselected;
+
+        public string ComboSelected
+        {
+            get { return _comboselected; }
+            set { _comboselected = value;
+                RaisePropertyChanged(nameof(ComboSelected));
+                CallApi(lang:ComboSelected);
+            }
+        }
+
+
+        public void ComboLangItemSrc()
+        {
+            ComboProp = new ObservableCollection<string>
+            {
+                "Arabic","Chinese","Dutch","English","French","German",
+                "Greek","Hebrew","Hindi","Italian","Japanese","Malayalam",
+                "Marathi","Norwegian","Portuguese","Romanian","Russian","Spanish",
+                "Swedish","Tamil","Telugu","Ukrainian"
+            };
+        }
+
+        private async void CallApi(string topic = "breaking-news",string lang = "English")
+        {
+            topic = string.IsNullOrEmpty(topic) ? "breaking-news" : topic;
+            lang = GetVariableNameByValue(lang).Split('-')[0];
+            
             ArticlesList.Clear();   
-            ArticlesList = await NewsViewModel.LoadNews(v, ArticlesList);
+            ArticlesList = await NewsViewModel.LoadNews(topic,lang, ArticlesList);
+        }
+
+        private string GetUniqueCode(string lang)
+        {
+
+            //throw new NotImplementedException();
+            return null;
+        }
+
+
+        public static string GetVariableNameByValue(string languageName)
+        {
+            try
+            {
+                var cultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+                foreach (var culture in cultures)
+                {
+                    if (culture.DisplayName.StartsWith(languageName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return culture.Name;
+                    }
+                }
+                return null;
+            }
+            catch (CultureNotFoundException)
+            {
+                return "";
+            }
         }
 
         private void LoadCategory()
         {
             ListOfCategory = new ObservableCollection<Category>()
             {
-                new Category {Id=1,Name="breaking-news" },
+                new Category {Id=1,Name="Breaking-News" },
                 new Category {Id=2,Name="World" },
                 new Category {Id=3,Name="Nation" },
                 new Category {Id=4,Name="Business " },
